@@ -8,6 +8,8 @@ let playersInCombatAreaTrigger: Set<number> = new Set();
 let playersInConstructionAreaTrigger: Set<number> = new Set();
 let playersInDisarmArea: Set<number> = new Set();
 
+//Misc
+
 const randomEnumValue = (enumeration: any) => {
   const values = Object.keys(enumeration);
   const enumKey = values[Math.floor(Math.random() * values.length)];
@@ -25,9 +27,31 @@ export function disarmPlayer(player: mod.Player): void{
 }
 
 export async function OnGameModeStarted(){
-  const fatKid = mod.RandomValueInArray(mod.AllPlayers())
+  const randomInt = Math.round(Math.random()*mod.AllPlayers.length)
+  
+  const fatKid = mod.ValueInArray(mod.AllPlayers(), randomInt)
   mod.SetTeam(fatKid, mod.GetTeam(2))
 
+  const runnerNumbers: number[] = []
+  for (let i = 0; i < mod.AllPlayers.length; i++) {
+    if (i != randomInt) {
+      runnerNumbers.push(i)
+    }
+  }
+  for (const num of runnerNumbers){
+    mod.SetTeam(mod.ValueInArray(mod.AllPlayers(), num), mod.GetTeam(1))
+  }
+
+}
+
+export function OnPlayerDeployed(eventPlayer: mod.Player): void {
+    disarmPlayer(eventPlayer)
+    if( mod.Equals(mod.GetTeam(eventPlayer), mod.GetTeam(1))){
+      mod.AddEquipment(eventPlayer, mod.Gadgets.Melee_Combat_Knife)
+    }
+    else {
+      mod.AddEquipment(eventPlayer, mod.Gadgets.Melee_Sledgehammer)
+    }
 }
 
 export function OnPlayerEnterAreaTrigger(eventPlayer: mod.Player, eventAreaTrigger: mod.AreaTrigger): void {

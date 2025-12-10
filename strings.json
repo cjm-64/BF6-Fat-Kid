@@ -1,5 +1,9 @@
 
 {
   "enterConstruction": "BONK!",
-  "enterCombat": "Good Luck..."
+  "enterCombat": "Good Luck...",
+  "minRem3": "3 Minutes Left",
+  "minRem2": "2 Minutes Left",
+  "minRem1": "1 Minute Left",
+  "Debug": "Constructed"
 }
